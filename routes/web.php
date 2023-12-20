@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\SpeakerController;
 use App\Http\Controllers\SponsorController;
 use Illuminate\Support\Facades\Auth;
@@ -46,3 +47,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('/contact/submit', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 Route::resource('sponsors', SponsorController::class);
 Route::resource('speakers', SpeakerController::class);
+Route::resource('events', EventController::class);

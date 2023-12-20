@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
+    protected $fillable = ['event_id', 'speaker_id', 'description', 'start_time', 'end_time', 'session_name'];
     protected $primaryKey = 'schedule_id';
 
     public function event(): \Illuminate\Database\Eloquent\Relations\BelongsTo
