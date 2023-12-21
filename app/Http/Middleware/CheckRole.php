@@ -16,12 +16,11 @@ class CheckRole
      * @param  string  $role
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, string $role): mixed
+    public function handle(Request $request, Closure $next): mixed
     {
-        if (!Auth::check() || Auth::user()->role !== $role) {
-            return redirect('/');
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return $next($request);
         }
-
-        return $next($request);
+        return redirect('/')->with('error', 'You do not have permission to perform this action.');
     }
 }

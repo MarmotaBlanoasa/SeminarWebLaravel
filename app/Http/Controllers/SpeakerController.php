@@ -11,6 +11,10 @@ class SpeakerController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('admin')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $speakers = Speaker::all();

@@ -3,7 +3,9 @@
 @section('content')
     <div class="container">
         <h1>Events</h1>
-        <a href="{{ route('events.create') }}" class="btn btn-primary">Create Event</a>
+        @if(Auth::user() && Auth::user()->role == 'admin')
+            <a href="{{ route('events.create') }}" class="btn btn-primary">Create Event</a>
+        @endif
         <table class="table">
             <thead>
             <tr>
@@ -29,12 +31,14 @@
                     <td>{{ $event->price }}</td>
                     <td>
                         <a href="{{ route('events.show', $event->event_id) }}" class="btn btn-primary">View Details</a>
-                        <a href="{{ route('events.edit', $event->event_id) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('events.destroy', $event->event_id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        @if(Auth::user() && Auth::user()->role == 'admin')
+                            <a href="{{ route('events.edit', $event->event_id) }}" class="btn btn-primary">Edit</a>
+                            <form action="{{ route('events.destroy', $event->event_id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        @endif
                     </td>
                 </tr>
             @endforeach

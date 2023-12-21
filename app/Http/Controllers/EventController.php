@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $events = Event::all();
@@ -23,7 +27,6 @@ class EventController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        Log::info($request->all());
         $validated = $request->validate([
             'event_name' => 'required',
             'event_description' => 'required',

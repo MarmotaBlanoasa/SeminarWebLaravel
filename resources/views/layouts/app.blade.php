@@ -16,6 +16,7 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 <div id="app">
@@ -42,9 +43,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('sponsors.index') }}">Sponsors</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('tickets') }}">My Tickets</a>
-                    </li>
+                    @if(Auth::user())
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('tickets.index') }}">My Tickets</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
                     </li>

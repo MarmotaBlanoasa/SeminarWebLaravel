@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="container">
+        @if(Auth::user() && Auth::user()->role == 'admin')
         <h1>Add Speaker</h1>
+        @endif
         <form action="{{ route('speakers.store') }}" method="POST">
             @csrf
             <div class="form-group">
@@ -27,5 +29,6 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
     </div>
 @endsection
