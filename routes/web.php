@@ -16,10 +16,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\EventController::class, 'index']);
 Route::get('/events', function () {
     return view('events.events');
 })->name('events');

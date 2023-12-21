@@ -75,9 +75,11 @@ class EventController extends Controller
         return view('events.create', compact('speakers', 'sponsors'));
     }
 
-    public function show(Event $event): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function show(Event $event)
     {
-        return view('events.show', compact('event'));
+        $schedules = Schedule::where('event_id', $event->event_id)->get();
+        $speakers = Speaker::all();
+        return view('events.show', compact('event', 'schedules', 'speakers'));
     }
 
     public function edit(Event $event): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -92,7 +94,6 @@ class EventController extends Controller
     public function update(Request $request, Event $event): \Illuminate\Http\RedirectResponse
     {
         $event->update($request->all());
-
         foreach ($request->schedules as $index => $scheduleData) {
             if (isset($scheduleData['schedule_id'])) {
                 $schedule = Schedule::find($scheduleData['schedule_id']);

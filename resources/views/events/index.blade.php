@@ -28,6 +28,7 @@
                     <td>{{ $event->max_tickets }}</td>
                     <td>{{ $event->price }}</td>
                     <td>
+                        <a href="{{ route('events.show', $event->event_id) }}" class="btn btn-primary">View Details</a>
                         <a href="{{ route('events.edit', $event->event_id) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('events.destroy', $event->event_id) }}" method="POST">
                             @csrf
