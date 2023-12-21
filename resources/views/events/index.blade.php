@@ -24,8 +24,8 @@
                 <tr>
                     <td>{{ $event->event_name }}</td>
                     <td>{{ $event->event_description }}</td>
-                    <td>{{ $event->date_start }}</td>
-                    <td>{{ $event->date_end }}</td>
+                    <td>{{ $event->date_start->format('Y-m-d') }}</td>
+                    <td>{{ $event->date_end->format('Y-m-d') }}</td>
                     <td>{{ $event->location }}</td>
                     <td>{{ $event->max_tickets }}</td>
                     <td>{{ $event->price }}</td>

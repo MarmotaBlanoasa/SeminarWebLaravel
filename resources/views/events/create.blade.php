@@ -22,7 +22,7 @@
             </div>
 
             <div class="form-group">
-                <label for="event_description">event_description:</label>
+                <label for="event_description">Event Description:</label>
                 <input type="text" class="form-control" id="event_description" name="event_description" required>
             </div>
 
@@ -51,18 +51,17 @@
                 <input type="number" class="form-control" id="price" name="price" required>
             </div>
 
-            <div class="form-group">
-                <label for="sponsor">Sponsors:</label>
-                <select name="sponsors[]" id="sponsor" class="form-control" multiple>
-                    @foreach($sponsors as $sponsor)
-                        <option value="{{ $sponsor->sponsor_id }}">{{ $sponsor->nume }}</option>
-                    @endforeach
-                </select>
-            </div>
+            @foreach($sponsors as $sponsor)
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="sponsors[]" value="{{ $sponsor->sponsor_id }}" id="sponsor_{{ $sponsor->sponsor_id }}">
+                    <label class="form-check-label" for="sponsor_{{ $sponsor->sponsor_id }}">
+                        {{ $sponsor->nume }}
+                    </label>
+                </div>
+            @endforeach
 
 
             <div class="form-group">
-                <label>Schedules:</label>
                 <div id="schedule-wrapper">
                     <div class="single-schedule">
                         <p class="fw-bold">Schedule #1</p>

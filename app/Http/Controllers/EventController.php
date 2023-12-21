@@ -40,14 +40,16 @@ class EventController extends Controller
             'sponsors' => 'sometimes|array',
             'sponsors[*].*' => 'exists:sponsors,sponsor_id',
             'schedules' => 'required|array',
-            // If schedules have more fields, you will need to validate them as well
+
         ]);
 
         // Begin a transaction in case one of the steps fails
         DB::beginTransaction();
         try {
-            $event = Event::create($request->only(['event_name', 'event_description', 'date_start', 'date_end', 'location', 'max_tickets', 'event_image', 'price']));
-            $event->sponsors()->attach($request->sponsors);
+            $event = Event::create($validated);
+            if (isset($validated['sponsors'])) {
+                $event->sponsors()->attach($validated['sponsors']);
+            }
 
             foreach ($request->schedules as $scheduleData) {
                 $schedule = new Schedule($scheduleData);
@@ -80,9 +82,12 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
+
         $schedules = Schedule::where('event_id', $event->event_id)->get();
         $speakers = Speaker::all();
+        $event->load('sponsors');
         return view('events.show', compact('event', 'schedules', 'speakers'));
+
     }
 
     public function edit(Event $event): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -96,7 +101,27 @@ class EventController extends Controller
 
     public function update(Request $request, Event $event): \Illuminate\Http\RedirectResponse
     {
-        $event->update($request->all());
+        $validated = $request->validate([
+            'event_name' => 'required',
+            'event_description' => 'required',
+            'date_start' => 'required|date',
+            'date_end' => 'required|date|after_or_equal:date_start',
+            'location' => 'required',
+            'max_tickets' => 'required|integer',
+            'price' => 'required|numeric',
+            // Assuming these are arrays of IDs
+            'sponsors' => 'sometimes|array',
+            'sponsors[*].*' => 'exists:sponsors,sponsor_id',
+            'schedules' => 'required|array',
+
+        ]);
+        $event->update($validated);
+        if (isset($validated['sponsors'])) {
+            $event->sponsors()->sync($validated['sponsors']);
+        } else {
+            // If no sponsors are provided, detach all sponsors
+            $event->sponsors()->detach();
+        }
         foreach ($request->schedules as $index => $scheduleData) {
             if (isset($scheduleData['schedule_id'])) {
                 $schedule = Schedule::find($scheduleData['schedule_id']);

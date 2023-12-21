@@ -34,7 +34,7 @@
                         <h6 class="card-title">{{ $schedule->session_name }}</h6>
                         <p class="card-text">{{ $schedule->description }}</p>
                         <p class="card-text">Speaker: @foreach($speakers as $speaker)
-                                {{ $schedule->speaker_id == $speaker->speaker_id ? $speaker->nume : 'TBA' }}
+                                {{ $schedule->speaker_id == $speaker->speaker_id ? $speaker->nume : ''}}
                             @endforeach</p>
                         <p class="card-text">Time: {{ $schedule->start_time->format('g:i A') }}
                             - {{ $schedule->end_time->format('g:i A') }}</p>

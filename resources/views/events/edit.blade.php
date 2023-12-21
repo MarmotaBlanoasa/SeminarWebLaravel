@@ -59,32 +59,31 @@
                 <input type="number" class="form-control" id="price" name="price" value="{{ $event->price }}" required>
             </div>
 
-            <div class="form-group">
-                <label for="sponsor">Sponsors:</label>
-                <select name="sponsors[]" id="sponsor" class="form-control" multiple>
-                    @foreach($sponsors as $sponsor)
-                        <option value="{{ $sponsor->id }}"
-                            {{ in_array($sponsor->id, $event->sponsors->pluck('id')->toArray()) ? 'selected' : '' }}>
-                            {{ $sponsor->nume }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+            @foreach($sponsors as $sponsor)
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="sponsors[]" value="{{ $sponsor->sponsor_id }}"
+                           id="sponsor_{{ $sponsor->sponsor_id }}"
+                        {{ $event->sponsors->contains('sponsor_id', $sponsor->sponsor_id) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="sponsor_{{ $sponsor->sponsor_id }}">
+                        {{ $sponsor->nume }}
+                    </label>
+                </div>
+            @endforeach
 
             <div class="form-group">
-                <label>Schedules:</label>
                 <div id="schedule-wrapper">
                     @foreach($event->schedules as $index => $schedule)
                         <input type="hidden" name="schedules[{{$index}}][schedule_id]" value="{{ $schedule->schedule_id }}">
                         <div class="single-schedule">
+                            <p class="fw-bold">Schedule #1</p>
                             <input type="text" name="schedules[{{ $index }}][session_name]"
                                    value="{{ $schedule->session_name }}" placeholder="Session Name"
                                    class="form-control">
                             <input type="time" name="schedules[{{ $index }}][start_time]"
-                                   value="{{ $schedule->start_time }}" placeholder="Start Time"
+                                   value="{{ $schedule->start_time->format('H:i') }}" placeholder="Start Time"
                                    class="form-control">
                             <input type="time" name="schedules[{{ $index }}][end_time]"
-                                   value="{{ $schedule->end_time }}" placeholder="End Time"
+                                   value="{{ $schedule->end_time->format('H:i') }}" placeholder="End Time"
                                    class="form-control">
                             <textarea name="schedules[{{ $index }}][description]" placeholder="Description"
                                       class="form-control">{{ $schedule->description }}</textarea>
@@ -112,6 +111,7 @@
             $('#addSchedule').on('click', function () {
                 const scheduleHtml = `
                 <div class="single-schedule">
+                    <p class="fw-bold">Schedule #${scheduleIndex}</p>
                     <input type="text" name="schedules[${scheduleIndex}][session_name]" placeholder="Session Name" class="form-control">
                     <input type="datetime-local" name="schedules[${scheduleIndex}][start_time]" placeholder="Start Time" class="form-control">
                     <input type="datetime-local" name="schedules[${scheduleIndex}][end_time]" placeholder="End Time" class="form-control">
